@@ -1,0 +1,16 @@
+# Define a PV.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-persistentVolume
+  labels:
+    type: local
+spec:
+  storageClassName: hostpath
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data"
+---
