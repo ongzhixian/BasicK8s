@@ -14,9 +14,10 @@ spec:
   containers:
   - image: alpine:3.16
     name: alpine
-    stdin: true
-    tty: true
+    # stdin: true
+    # tty: true
     # command: ["sh"]
+    command: [    'sh', '-c', 'echo The Bench Container 1 is Running ; sleep 3600']
     volumeMounts:
     - name: fileshare-storage
       mountPath: /mnt/data
