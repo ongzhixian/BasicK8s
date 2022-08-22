@@ -111,3 +111,7 @@ minikube kubectl -- expose deployment rabbitmq-minikube --type=NodePort --port=1
 -- OR --
 minikube kubectl -- expose deployment rabbitmq-mgmt --type=NodePort --port=15672
 minikube kubectl -- expose deployment rabbitmq-port --type=NodePort --port=5672
+
+
+# need to check this in more detail:
+# https://medium.com/@kyralak/accessing-kubernetes-services-without-ingress-nodeport-or-loadbalancer-de6061b42d72
