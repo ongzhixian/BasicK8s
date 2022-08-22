@@ -1,0 +1,12 @@
+# Define a PVC.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fileshare-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
