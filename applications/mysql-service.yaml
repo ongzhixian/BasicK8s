@@ -1,0 +1,22 @@
+# Generated from: kubectl create service clusterip mysql --tcp=3306 --dry-run=client -o yaml > mysql-service.yaml
+# Note: service.spec.selector (app:mysql) MUST match deployment.spec.template.metadata.labels (app:mysql)
+# Note: The None assigned to spec.clusterIP; this is a headless service (https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mysql
+  name: mysql
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: "3306"
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mysql
+status:
+  loadBalancer: {}

@@ -57,14 +57,20 @@ gcr.io/k8s-minikube/storage-provisioner:v5
 
 minikube image load mcr.microsoft.com/dotnet/sdk:6.0
 minikube image load mcr.microsoft.com/dotnet/aspnet:6.0
+
+minikube image load mcr.microsoft.com/dotnet/sdk:6.0-focal
+minikube image load mcr.microsoft.com/dotnet/aspnet:6.0-focal
+minikube image load mcr.microsoft.com/dotnet/runtime:6.0-focal
+
 minikube image load mcr.microsoft.com/powershell:latest
 
 minikube image load mcr.microsoft.com/mssql/server
 
 minikube image load python:3.7-slim
 minikube image load mysql:5.7
-minikube image load nginx:1
-minikube image load redis:7
+minikube image load nginx:1.22
+minikube image load redis:6.2.7
+minikube image load rabbitmq:3.10-management
 
 minikube image load alpine:3.16
 minikube image load ubuntu:jammy
@@ -83,3 +89,25 @@ docker.io/library/basic-mvc:1
 
 
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password_123' -e 'MSSQL_PID=Express' -p 1433:1433 --name sqlserver mcr.microsoft.com/mssql/server
+
+---
+MYSQL
+
+docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.7
+
+minikube kubectl -- create deployment mysql-minikube --image=mysql:5.7
+minikube kubectl -- set env deployment/mysql-minikube MYSQL_ROOT_PASSWORD=pass1234
+minikube kubectl -- expose deployment mysql-minikube --type=NodePort --port=3306
+
+---
+RABBIT MQ
+
+docker run -d --hostname my-rabbit --name some-rabbit rabbitmq:3
+
+
+minikube kubectl -- create deployment rabbitmq-minikube --image=rabbitmq:3.10-management
+
+minikube kubectl -- expose deployment rabbitmq-minikube --type=NodePort --port=15672,5672
+-- OR --
+minikube kubectl -- expose deployment rabbitmq-mgmt --type=NodePort --port=15672
+minikube kubectl -- expose deployment rabbitmq-port --type=NodePort --port=5672

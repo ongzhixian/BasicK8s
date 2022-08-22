@@ -1,0 +1,36 @@
+Name:               mysql
+Namespace:          default
+CreationTimestamp:  Mon, 22 Aug 2022 12:01:48 +0800
+Labels:             <none>
+Annotations:        deployment.kubernetes.io/revision: 1
+Selector:           app=mysql
+Replicas:           1 desired | 1 updated | 1 total | 1 available | 0 unavailable
+StrategyType:       Recreate
+MinReadySeconds:    0
+Pod Template:
+  Labels:  app=mysql
+  Containers:
+   mysql:
+    Image:      mysql:5.7
+    Port:       3306/TCP
+    Host Port:  0/TCP
+    Environment:
+      MYSQL_ROOT_PASSWORD:  password
+    Mounts:
+      /var/lib/mysql from mysql-persistent-storage (rw)
+  Volumes:
+   mysql-persistent-storage:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  mysql-pvc
+    ReadOnly:   false
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   mysql-766876d89c (1/1 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  5m20s  deployment-controller  Scaled up replica set mysql-766876d89c to 1

@@ -1,0 +1,19 @@
+# Generated from: kubectl create service nodeport redis-minikube --tcp=6379 --dry-run=client -o yaml > redis-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: redis-minikube
+  name: redis-minikube
+spec:
+  ports:
+  - name: "6379"
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis-minikube
+  type: NodePort
+status:
+  loadBalancer: {}

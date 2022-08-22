@@ -1,0 +1,23 @@
+# Generated from: kubectl create service clusterip mysql --tcp=3306 --dry-run=client -o yaml > mysql-service.yaml
+# Note: service.spec.selector (app:mysql) MUST match deployment.spec.template.metadata.labels (app:mysql)
+# Note: For loadbalancer setup, externalIPs = minikuke IP
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mysql
+  name: mysql
+spec:
+  type: LoadBalancer
+  externalIPs:
+  - 172.25.116.158
+  ports:
+  - name: "3306"
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: mysql
+status:
+  loadBalancer: {}

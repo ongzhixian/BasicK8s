@@ -1,0 +1,15 @@
+Name:              mysql
+Namespace:         default
+Labels:            <none>
+Annotations:       <none>
+Selector:          app=mysql
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                None
+IPs:               None
+Port:              <unset>  3306/TCP
+TargetPort:        3306/TCP
+Endpoints:         172.17.0.7:3306
+Session Affinity:  None
+Events:            <none>
