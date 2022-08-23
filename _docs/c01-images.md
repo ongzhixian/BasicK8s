@@ -14,9 +14,11 @@
 
 | docker.io/library/sgx-isin              | v1              | ef793df72fa86 | 123MB  |
 
+
 | gcr.io/k8s-minikube/storage-provisioner | v5              | 6e38f40d628db | 31.5MB |
 | docker.io/kubernetesui/metrics-scraper  | <none>          | 115053965e86b | 43.8MB |
 | docker.io/kubernetesui/dashboard        | <none>          | 1042d9e0d8fcc | 246MB  |
+| k8s.gcr.io/metrics-server/metrics-server| <none>          | e57a417f15d36 | 68.8MB |
 | k8s.gcr.io/kube-controller-manager      | v1.23.3         | b07520cd7ab76 | 125MB  |
 | k8s.gcr.io/kube-scheduler               | v1.23.3         | 99a3486be4f28 | 53.5MB |
 | k8s.gcr.io/pause                        | 3.6             | 6270bb605e12e | 683kB  |
