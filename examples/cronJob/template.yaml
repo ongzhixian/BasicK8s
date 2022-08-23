@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: everymin
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: everymin
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+          - image: alpine:3.16
+            name: everymin
+            resources: {}
+          restartPolicy: OnFailure
+  schedule: '* * * * *'
+status: {}
