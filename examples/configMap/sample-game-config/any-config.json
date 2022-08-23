@@ -1,0 +1,12 @@
+{
+    "MYSQL" : {
+        "dev_forum": {
+            "HOST"     : "172.26.214.38",
+            "PORT"     : 32056,
+            "DATABASE" : "somedatabase",
+            "USERNAME" : "someusername",
+            "PASSWORD" : "somepassword"
+        }
+    },
+    "SESSION_SECRET_KEY": "somesecretkey"
+}

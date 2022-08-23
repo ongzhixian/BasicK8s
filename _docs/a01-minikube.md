@@ -113,5 +113,15 @@ minikube kubectl -- expose deployment rabbitmq-mgmt --type=NodePort --port=15672
 minikube kubectl -- expose deployment rabbitmq-port --type=NodePort --port=5672
 
 
+# Upgrade k8s
+
+minikube start --kubernetes-version=v1.24.3
+
+# When `kubectl top node|pod` is not working
+1. Ensure that the respective pod is running
+minikube start --extra-config=kubelet.housekeeping-interval=10s
+(no need? by default already set)
+
+
 # need to check this in more detail:
 # https://medium.com/@kyralak/accessing-kubernetes-services-without-ingress-nodeport-or-loadbalancer-de6061b42d72

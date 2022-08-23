@@ -12,5 +12,19 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data"
+    path: "/mnt/my-10gi-pv"
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-1gi-pvc
+  labels:
+    app: my-1gi-pvc
+spec:
+  storageClassName: hostpath
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  

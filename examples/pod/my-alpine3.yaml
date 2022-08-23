@@ -4,20 +4,34 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: my-alpine
+  name: my-alpine3
 spec:
+  terminationGracePeriodSeconds: 0
   restartPolicy: "Never"
   volumes:
   - name: fileshare-storage
     persistentVolumeClaim:
-      claimName: fileshare-pv-claim
+      claimName: my-1gi-pvc
+  - name: app-props
+    configMap:
+      name: app-props
+  - name: secret-credential
+    secret:
+      secretName: my-secret
+      optional: false # default setting; "mysecret" must exist
+
   containers:
   - image: alpine:3.16
     name: alpine
     # stdin: true
     # tty: true
     # command: ["sh"]
-    command: [    'sh', '-c', 'echo The Bench Container 1 is Running ; sleep 3600']
+    command: [ 'sh', '-c', 'sleep infinite' ]
     volumeMounts:
     - name: fileshare-storage
       mountPath: /mnt/data
+    - name: app-props
+      mountPath: /mnt/config
+    - name: secret-credential
+      mountPath: "/mnt/secret"
+      readOnly: true

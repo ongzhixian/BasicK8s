@@ -1,0 +1,22 @@
+# Generated from: kubectl create service clusterip mysql --tcp=3306 --dry-run=client -o yaml > mysql-service.yaml
+# Note: service.spec.selector (app:mysql) MUST match deployment.spec.template.metadata.labels (app:mysql)
+# Note: By default, the allowed NodePort range is: 30000-32767; you can hardcode nodeport instead of having one randomly assigned
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  type: NodePort
+  ports:
+  - name: "80"
+    port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 30080
+  selector:
+    app: nginx
+status:
+  loadBalancer: {}
