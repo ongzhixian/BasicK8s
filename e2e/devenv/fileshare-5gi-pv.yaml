@@ -1,0 +1,30 @@
+# Define a PV.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fileshare-5gi-pv
+  labels:
+    type: local
+spec:
+  storageClassName: hostpath
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/fileshare-5gi-pv"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fileshare-128mi-pvc
+  labels:
+    app: fileshare-128mi
+spec:
+  storageClassName: hostpath
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 128Mi
+  

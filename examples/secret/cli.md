@@ -60,3 +60,6 @@ some-app-secret.json  some-credential.json
 ```
 
 kubectl create secret generic my-secret2 --from-file=C:/Users/zhixian/.pythonanywhere.json
+
+
+kubectl create secret generic my-secret3 --from-file=$env:USERPROFILE/.pythonanywhere.json

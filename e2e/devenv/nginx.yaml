@@ -1,0 +1,50 @@
+# Generated from: kubectl create deployment nginx-stateless --dry-run=client --image=nginx:1.22 -o yaml > nginx-stateless.yaml
+# Use for demostrating Task 8.1 - Run a Stateless Application Using a Deployment
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  serviceName: "nginx"
+  replicas: 2
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+    spec:
+      volumes:
+      - name: fileshare-storage
+        persistentVolumeClaim:
+          claimName: my-1gi-pvc
+      containers:
+      - image: nginx:1.22
+        name: nginx
+        resources: 
+          requests:  
+            memory: 100M
+            cpu: "0.25"
+          limits:
+            memory: 100M
+            cpu: "0.50"
+        volumeMounts:
+        - name: fileshare-storage
+          mountPath: /usr/share/nginx/html
+        - name: local-storage
+          mountPath: /mnt/loca
+  volumeClaimTemplates:
+  - metadata:
+      name: local-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "nginx-storage"
+      resources:
+        requests:
+          storage: 100Mi
+
