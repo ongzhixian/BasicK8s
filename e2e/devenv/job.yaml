@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: echojob
+spec:
+  template:
+    spec:
+      containers:
+      - name: alpine-echo
+        image: alpine:3.16
+        command: [ "sh", "-c", "date; echo Hello from the Kubernetes cluster"]
+      restartPolicy: Never
+  backoffLimit: 1
