@@ -21,6 +21,8 @@ kubectl apply -f .\fileshare-5gi-pv.yaml
 ## Secrets
 
 # kubectl create secret generic my-secret3 --from-file=$env:USERPROFILE/.pythonanywhere.json
+# kubectl create secret generic my-secret3 --from-file=$env:USERPROFILE/.pythonanywhere.json
+kubectl create secret generic mysql-secret --from-literal=PASSWORD=pass1234 -o yaml --dry-run=client > secret-mysql.yaml
 
 ########################################
 ## Config Maps

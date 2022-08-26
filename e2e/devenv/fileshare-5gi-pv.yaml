@@ -5,6 +5,7 @@ metadata:
   name: fileshare-5gi-pv
   labels:
     type: local
+    environment: dev
 spec:
   storageClassName: hostpath
   capacity:
@@ -12,14 +13,16 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/fileshare-5gi-pv"
+    path: "/data/fileshare-5gi-pv"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: devenv
   name: fileshare-128mi-pvc
   labels:
     app: fileshare-128mi
+    environment: dev
 spec:
   storageClassName: hostpath
   accessModes:

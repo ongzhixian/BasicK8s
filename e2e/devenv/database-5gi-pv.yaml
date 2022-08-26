@@ -5,6 +5,7 @@ metadata:
   name: database-5gi-pv
   labels:
     type: local
+    environment: dev
 spec:
   storageClassName: hostpath
   capacity:
@@ -12,14 +13,16 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/database-5gi-pv"
+    path: "/data/database-5gi-pv"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  namespace: devenv
   name: mysql-pvc
   labels:
     app: mysql
+    environment: dev
 spec:
   storageClassName: hostpath
   accessModes:

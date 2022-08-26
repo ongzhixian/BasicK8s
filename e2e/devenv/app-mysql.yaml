@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: devenv
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  serviceName: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+      - name: fileshare-storage
+        persistentVolumeClaim:
+          claimName: fileshare-128mi-pvc
+      containers:
+      - image: mysql:5.7
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: PASSWORD
+        ports:
+        - containerPort: 3306
+          name: mysql
+        # resources: 
+        #   requests:  
+        #     memory: 100M
+        #     cpu: "0.25"
+        #   limits:
+        #     memory: 100M
+        #     cpu: "0.50"
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+        - name: fileshare-storage
+          mountPath: /mnt/fileshare128mi
