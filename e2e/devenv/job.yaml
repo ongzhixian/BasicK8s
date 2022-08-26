@@ -9,6 +9,12 @@ spec:
       containers:
       - name: alpine-echo
         image: alpine:3.16
-        command: [ "sh", "-c", "date; echo Hello from the Kubernetes cluster"]
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-secret2
+              key: PASSWORD
+        command: [ "sh", "-c", "date; echo Hello from the Kubernetes cluster $MYSQL_ROOT_PASSWORD"]
       restartPolicy: Never
   backoffLimit: 1

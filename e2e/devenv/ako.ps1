@@ -1,0 +1,1 @@
+kubectl create secret generic my-secret3 --from-file=$env:USERPROFILE/.pythonanywhere.json
