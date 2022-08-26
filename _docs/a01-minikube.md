@@ -72,6 +72,7 @@ minikube image load nginx:1.22
 minikube image load redis:6.2.7
 minikube image load rabbitmq:3.10-management
 
+minikube image load erlang:25
 minikube image load alpine:3.16
 minikube image load ubuntu:jammy
 minikube image load debian:bullseye-slim
