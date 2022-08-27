@@ -1,0 +1,33 @@
+# Run one of the following to run
+# kubectl run alpine-sh --rm -it --image=alpine:3.16 -- sh
+# kubectl run -i --rm --tty debug --image=alpine:3.16 --restart=Never -- sh
+# kubectl exec pp -it -- sh
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pp
+spec:
+  terminationGracePeriodSeconds: 0
+  volumes:
+  - name: cloud-amqp-secret
+    secret:
+      secretName: cloud-amqp-secret
+      items:
+      - key: .cloudampq.json
+        path: .cloudampq.json
+      optional: false # default setting; "mysecret" must exist
+  containers:
+  - image: bash:5.1
+    name: bash
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql-secret
+          key: PASSWORD
+    volumeMounts:
+    - name: cloud-amqp-secret
+      mountPath: "/mnt/secrets"
+      readOnly: true
+    command: [ '/bin/sh', '-c', 'sleep inf' ]
+    

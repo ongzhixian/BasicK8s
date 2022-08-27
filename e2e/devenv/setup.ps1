@@ -5,6 +5,8 @@
 # Config Maps
 # Cron jobs
 # StatefulSets / Deployments
+# Services
+# pod > job > cronjob
 
 ########################################
 ## Namespace
@@ -27,9 +29,13 @@ kubectl apply -f .\fileshare-5gi-pv.yaml
 kubectl create secret generic mysql-secret --from-literal=PASSWORD=$((Get-Content "$env:USERPROFILE/.pythonanywhere.json" -Raw | ConvertFrom-Json).MYSQL.dev_forum.PASSWORD) -o yaml --dry-run=client > secret-mysql.yaml
 kubectl apply -f .\secret-mysql.yaml
 
+kubectl create secret generic cloud-amqp-secret --from-file=$env:USERPROFILE/.cloudampq.json -o yaml --dry-run=client > secret-cloud-amqp.yaml
+kubectl apply -f .\secret-cloud-amqp.yaml
+
 ########################################
 ## Config Maps
 
+# kubectl create config cloud_amqp --from-file=$env:USERPROFILE/.cloudampq.json
 # kubectl apply -f .\config-maps.yaml
 
 ########################################
@@ -48,3 +54,4 @@ kubectl apply -f .\app-mysql.yaml
 ## Services
 
 kubectl apply -f .\service.yaml
+

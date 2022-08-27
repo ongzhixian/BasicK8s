@@ -6,6 +6,14 @@ metadata:
 spec:
   template:
     spec:
+      volumes:
+        - name: cloud-amqp-secret
+          secret:
+            secretName: cloud-amqp-secret
+            items:
+            - key: .cloudampq.json
+              path: .cloudampq.json
+            optional: false # default setting; "mysecret" must exist
       containers:
       - name: alpine-echo
         image: alpine:3.16
@@ -13,8 +21,12 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: my-secret2
+              name: mysql-secret
               key: PASSWORD
-        command: [ "sh", "-c", "date; echo Hello from the Kubernetes cluster $MYSQL_ROOT_PASSWORD"]
+        volumeMounts:
+        - name: cloud-amqp-secret
+          mountPath: "/mnt/secrets"
+          readOnly: true
+        command: [ "sh", "-c", "date; cat /mnt/secrets/.cloudampq.json; echo all ok $MYSQL_ROOT_PASSWORD "]
       restartPolicy: Never
   backoffLimit: 1
