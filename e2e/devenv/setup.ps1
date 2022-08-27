@@ -6,7 +6,9 @@
 # Cron jobs
 # StatefulSets / Deployments
 # Services
-# pod > job > cronjob
+
+# How to debug
+#  > pod > job > cronjob
 
 ########################################
 ## Namespace
