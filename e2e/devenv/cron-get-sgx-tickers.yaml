@@ -1,0 +1,52 @@
+# To trigger cronjob manually:
+# kubectl create job --from=<name-of-cronjob> <name-of-job>
+# kubectl create job --from=cronjob/get-sgx-tickers get-sgx-tickers
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: devenv
+  name: get-sgx-tickers
+  labels:
+    environment: dev
+    app: get-sgx-tickers
+    app-type: cronjob
+spec:
+  jobTemplate:
+    metadata:
+      namespace: devenv
+      name: get-sgx-tickers
+      labels:
+        environment: dev
+        app: get-sgx-tickers
+        app-type: cronjob
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          terminationGracePeriodSeconds: 0
+          restartPolicy: Never
+          volumes:
+          - name: cloud-amqp-secret
+            secret:
+              secretName: cloud-amqp-secret
+              items:
+              - key: .cloudampq.json
+                path: cloud-amqp/.cloudampq.json
+              optional: false # default false (secret must exist)
+          containers:
+          - image: get-sgx-tickers:v1
+            name: get-sgx-tickers
+            env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: PASSWORD
+            volumeMounts:
+            - name: cloud-amqp-secret
+              mountPath: "/mnt/secrets"
+              readOnly: true
+            # command: [ "sh", "-c", "date; echo hello world"]
+  schedule: '59 * * * *'
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1

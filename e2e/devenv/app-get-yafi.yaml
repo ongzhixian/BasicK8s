@@ -1,0 +1,45 @@
+# Generated from kubectl create deployment mysql-stateful --dry-run=client --image=mysql:5.7 -o yaml > mysql-stateful.yaml
+# Note: deployment.spec.template.metadata.labels (app:mysql) MUST match service.spec.selector (app:mysql)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: devenv
+  name: get-yafi
+  labels:
+    app: get-yafi
+    app-type: service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: get-yafi
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      namespace: devenv
+      name: get-yafi
+      labels:
+        app: get-yafi
+        app-type: service
+    spec:
+      volumes:
+      - name: fileshare-storage
+        persistentVolumeClaim:
+          claimName: sgx-yafi-fileshare
+      containers:
+      - image: get-yafi:v1
+        name: get-yafi
+        resources: 
+          requests:  
+            memory: 100M
+            cpu: "0.25"
+          limits:
+            memory: 100M
+            cpu: "0.50"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "password"
+        volumeMounts:
+        - name: sgx-yafi-fileshare
+          mountPath: /usr/share/yafi

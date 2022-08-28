@@ -1,3 +1,4 @@
+# Use this to test image as a pod
 # Run one of the following to run
 # kubectl run alpine-sh --rm -it --image=alpine:3.16 -- sh
 # kubectl run -i --rm --tty debug --image=alpine:3.16 --restart=Never -- sh

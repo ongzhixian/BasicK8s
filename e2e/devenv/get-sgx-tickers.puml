@@ -1,0 +1,18 @@
+' java -jar C:\Apps\bin\plantuml.jar -verbose .\x.puml
+
+@startuml
+
+title get-sgx-tickers
+
+start
+
+/*
+while (data available?)
+    :read data;
+    :generate diagrams;
+endwhile
+*/
+
+stop
+
+@enduml

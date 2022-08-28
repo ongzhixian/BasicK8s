@@ -22,7 +22,7 @@ spec:
           claimName: mysql-pvc
       - name: fileshare-storage
         persistentVolumeClaim:
-          claimName: fileshare-128mi-pvc
+          claimName: generic-128mi
       containers:
       - image: mysql:5.7
         name: mysql

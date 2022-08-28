@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   namespace: devenv
-  name: dj
+  name: jj
 spec:
   backoffLimit: 1
   template:
@@ -16,10 +16,10 @@ spec:
           items:
           - key: .cloudampq.json
             path: cloud-amqp/.cloudampq.json
-          optional: false # default setting; "mysecret" must exist
+          optional: false # default false (secret must exist)
       containers:
-      - image: dumpy:v1
-        name: dum
+      - image: get-sgx-tickers:v1
+        name: get-sgx-tickers
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:

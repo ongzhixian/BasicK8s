@@ -1,3 +1,5 @@
-# e2e
+# Purpose
 
-For those scripts that do end-to-end setup (pv, pvc, service, deployments, statefulsets)
+Places scripts for setting up devenv here.
+
+Currently devenv is for setting tickers

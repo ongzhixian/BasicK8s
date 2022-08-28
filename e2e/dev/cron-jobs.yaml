@@ -18,7 +18,7 @@ spec:
             name: everymin
             resources: {}
             command: [ "sh", "-c", "date; echo Hello from the Kubernetes cluster"]
-          restartPolicy: OnFailure
+          restartPolicy: Never
   schedule: '* * * * *'
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1

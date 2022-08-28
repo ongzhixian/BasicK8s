@@ -16,6 +16,9 @@ spec:
       - key: .cloudampq.json
         path: cloud-amqp/.cloudampq.json
       optional: false # default setting; "mysecret" must exist
+  - name: sgx-yafi-fileshare
+    persistentVolumeClaim:
+      claimName: sgx-yafi-fileshare
   containers:
   - image: python:3.7-slim
     name: python37
@@ -29,5 +32,7 @@ spec:
     - name: cloud-amqp-secret
       mountPath: "/mnt/secrets"
       readOnly: true
+    - name: sgx-yafi-fileshare
+      mountPath: /usr/share/yafi
     command: [ '/bin/bash', '-c', 'sleep inf' ]
     

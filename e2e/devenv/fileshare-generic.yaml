@@ -30,36 +30,3 @@ spec:
   resources:
     requests:
       storage: 128Mi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: devenv
-  name: nginx-fileshare
-  labels:
-    app: nginx
-    environment: dev
-spec:
-  storageClassName: hostpath
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 128Mi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  namespace: devenv
-  name: sgx-yafi-fileshare
-  labels:
-    app: sgx-yafi
-    environment: dev
-spec:
-  storageClassName: hostpath
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 256Mi
-  
