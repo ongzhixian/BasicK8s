@@ -351,3 +351,7 @@ MigrationBackup/
 
 # 
 **/secret-*.yaml
+**/ako.ps1
+**/mk.ps1
+**/setup.ps1
+**/clean.ps1

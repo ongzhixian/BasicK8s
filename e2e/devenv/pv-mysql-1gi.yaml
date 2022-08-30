@@ -2,26 +2,28 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: fileshare-5gi-pv
+  namespace: devenv
+  name: mysql-pv
   labels:
     type: local
+    app: mysql
     environment: dev
 spec:
   storageClassName: hostpath
   capacity:
-    storage: 5Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data/fileshare-5gi-pv"
+    path: "/data/mysql"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   namespace: devenv
-  name: generic-128mi
+  name: mysql-pvc
   labels:
-    app: generic
+    app: mysql
     environment: dev
 spec:
   storageClassName: hostpath
@@ -29,4 +31,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 128Mi
+      storage: 1Gi
+  

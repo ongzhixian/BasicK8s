@@ -1,3 +1,38 @@
+param (
+    [string] $task='do-nothing'
+)
+
+function Install-NewK8s {
+    param (
+        # OptionalParameters
+    )
+    kubectl apply -f .\ns-devenv.yaml
+    
+    kubectl apply -f .\pv-mysql-1gi.yaml
+    kubectl apply -f .\pv-generic-fileshare.yaml
+    kubectl create secret generic mysql-secret --from-literal=PASSWORD=$((Get-Content "$env:USERPROFILE/.pythonanywhere.json" -Raw | ConvertFrom-Json).MYSQL.dev_forum.PASSWORD) -o yaml --dry-run=client > secret-mysql.yaml
+    kubectl apply -f .\secret-mysql.yaml
+    kubectl apply -f .\app-mysql.yaml
+    kubectl apply -f .\svc-mysql.yaml
+
+    
+}
+
+switch ($task) {
+    'do-nothing' {
+        exit 0
+    }
+    'install' {
+        Install-NewK8s
+    }
+    'clean' {
+        Write-Host "Todo"
+        exit 0
+    }
+    Default {
+        exit 1
+    }
+}
 # Overview of things to setup
 # Namespace
 # Volumes and claims
@@ -10,50 +45,56 @@
 # How to debug
 #  > pod > job > cronjob
 
-########################################
-## Namespace
+function Examples {
+    # param (
+    #     OptionalParameters
+    # )
+    ########################################
+    ## Namespace
 
-kubectl apply -f .\namespace.yaml
+    kubectl apply -f .\namespace.yaml
 
-########################################
-## Volumes and claims
+    ########################################
+    ## Volumes and claims
 
-kubectl apply -f .\database-5gi-pv.yaml
-kubectl apply -f .\fileshare-5gi-pv.yaml
+    kubectl apply -f .\database-5gi-pv.yaml
+    kubectl apply -f .\fileshare-5gi-pv.yaml
 
-########################################
-## Secrets (ConvertFrom-Base64)
+    ########################################
+    ## Secrets (ConvertFrom-Base64)
 
-# kubectl create secret generic my-secret3 --from-file=$env:USERPROFILE/.pythonanywhere.json
-# kubectl create secret generic mysql-secret --from-literal=PASSWORD=pass1234 -o yaml --dry-run=client > secret-mysql.yaml
-# kubectl create secret generic cloud-amqp-secret --from-literal=CLOUD_AMQP_URL=$((Get-Content "$env:USERPROFILE/.cloudampq.json" -Raw | ConvertFrom-Json).cloud_amqp.armadillo.url) -o yaml --dry-run=client > secret-cloudamqp.yaml
+    # kubectl create secret generic my-secret3 --from-file=$env:USERPROFILE/.pythonanywhere.json
+    # kubectl create secret generic mysql-secret --from-literal=PASSWORD=pass1234 -o yaml --dry-run=client > secret-mysql.yaml
+    # kubectl create secret generic cloud-amqp-secret --from-literal=CLOUD_AMQP_URL=$((Get-Content "$env:USERPROFILE/.cloudampq.json" -Raw | ConvertFrom-Json).cloud_amqp.armadillo.url) -o yaml --dry-run=client > secret-cloudamqp.yaml
 
-kubectl create secret generic mysql-secret --from-literal=PASSWORD=$((Get-Content "$env:USERPROFILE/.pythonanywhere.json" -Raw | ConvertFrom-Json).MYSQL.dev_forum.PASSWORD) -o yaml --dry-run=client > secret-mysql.yaml
-kubectl apply -f .\secret-mysql.yaml
+    kubectl create secret generic mysql-secret --from-literal=PASSWORD=$((Get-Content "$env:USERPROFILE/.pythonanywhere.json" -Raw | ConvertFrom-Json).MYSQL.dev_forum.PASSWORD) -o yaml --dry-run=client > secret-mysql.yaml
+    kubectl apply -f .\secret-mysql.yaml
 
-kubectl create secret generic cloud-amqp-secret --from-file=$env:USERPROFILE/.cloudampq.json -o yaml --dry-run=client > secret-cloud-amqp.yaml
-kubectl apply -f .\secret-cloud-amqp.yaml
+    kubectl create secret generic cloud-amqp-secret --from-file=$env:USERPROFILE/.cloudampq.json -o yaml --dry-run=client > secret-cloud-amqp.yaml
+    kubectl apply -f .\secret-cloud-amqp.yaml
 
-########################################
-## Config Maps
+    ########################################
+    ## Config Maps
 
-# kubectl create config cloud_amqp --from-file=$env:USERPROFILE/.cloudampq.json
-# kubectl apply -f .\config-maps.yaml
+    # kubectl create config cloud_amqp --from-file=$env:USERPROFILE/.cloudampq.json
+    # kubectl apply -f .\config-maps.yaml
 
-########################################
-## Cron jobs
+    ########################################
+    ## Cron jobs
 
-# kubectl apply -f .\cron-jobs.yaml
+    # kubectl apply -f .\cron-jobs.yaml
 
-########################################
-## StatefulSets / Deployments (applications)
+    ########################################
+    ## StatefulSets / Deployments (applications)
 
-# kubectl apply -f .\nginx.yaml
-kubectl apply -f .\app-mysql.yaml
+    # kubectl apply -f .\nginx.yaml
+    kubectl apply -f .\app-mysql.yaml
 
 
-########################################
-## Services
+    ########################################
+    ## Services
 
-kubectl apply -f .\service.yaml
+    kubectl apply -f .\service.yaml
 
+    
+}

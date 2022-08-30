@@ -5,6 +5,7 @@ metadata:
   name: mysql
   labels:
     app: mysql
+    environment: dev
 spec:
   selector:
     matchLabels:
@@ -15,6 +16,7 @@ spec:
     metadata:
       labels:
         app: mysql
+        environment: dev
     spec:
       volumes:
       - name: mysql-storage
@@ -22,7 +24,7 @@ spec:
           claimName: mysql-pvc
       - name: fileshare-storage
         persistentVolumeClaim:
-          claimName: generic-128mi
+          claimName: generic-128mi-pvc
       containers:
       - image: mysql:5.7
         name: mysql
