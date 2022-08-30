@@ -2,20 +2,49 @@
 # Note: service.spec.selector (app:mysql) MUST match deployment.spec.template.metadata.labels (app:mysql)
 # Note: By default, the allowed NodePort range is: 30000-32767; you can hardcode nodeport instead of having one randomly assigned
 # Headless service (see https://stackoverflow.com/questions/46456239/how-to-expose-a-headless-service-for-a-statefulset-externally-in-kubernetes)
+# Headless service for stable DNS entries of StatefulSet members.
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+    app.kubernetes.io/name: mysql
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+  clusterIP: None
+  selector:
+    app: mysql
+---
+# Client service for connecting to any MySQL instance for reads.
+# For writes, you must instead connect to the primary: mysql-0.mysql.
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-read
+  labels:
+    app: mysql
+    app.kubernetes.io/name: mysql
+    # readonly: "true"
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+  selector:
+    app: mysql
+---
+# Create an external service per pod exposing a nodeport
 apiVersion: v1
 kind: Service
 metadata:
   namespace: devenv
-  name: mysql
-  labels:
-    app: mysql
+  name: mysql-ext
 spec:
-  clusterIP: None
+  type: NodePort
   ports:
-  - name: mysql
-    port: 3306
+  - port: 3306
     nodePort: 30306
   selector:
     app: mysql
-    environment: dev
-  
