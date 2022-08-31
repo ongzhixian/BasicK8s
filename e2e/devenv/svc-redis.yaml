@@ -1,0 +1,19 @@
+# Template=kubectl create service nodeport redis --dry-run=client -o yaml --node-port=32638 --tcp=6379 > svc-redis.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: devenv
+  name: redis
+  labels:
+    app: redis
+    environment: dev
+spec:
+  ports:
+  - name: "redis-port"
+    nodePort: 30379
+    port: 6379
+    protocol: TCP
+    targetPort: 6379
+  selector:
+    app: redis
+  type: NodePort
