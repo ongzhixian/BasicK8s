@@ -1,20 +1,12 @@
-# Generated from: kubectl create service clusterip mysql --tcp=3306 --dry-run=client -o yaml > mysql-service.yaml
-# Note: service.spec.selector (app:mysql) MUST match deployment.spec.template.metadata.labels (app:mysql)
-# Note: By default, the allowed NodePort range is: 30000-32767; you can hardcode nodeport instead of having one randomly assigned
-# Headless service (see https://stackoverflow.com/questions/46456239/how-to-expose-a-headless-service-for-a-statefulset-externally-in-kubernetes)
 # Headless service for stable DNS entries of StatefulSet members.
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql
-  labels:
-    app: mysql
-    app.kubernetes.io/name: mysql
 spec:
-  ports:
-  - name: mysql
-    port: 3306
   clusterIP: None
+  ports:
+  - port: 3306
   selector:
     app: mysql
 ---
@@ -23,11 +15,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-read
+  namespace: devenv
+  name: mysql-readonly
   labels:
     app: mysql
-    app.kubernetes.io/name: mysql
-    # readonly: "true"
+    environment: dev
+    readonly: "true"
 spec:
   ports:
   - name: mysql
@@ -45,6 +38,28 @@ spec:
   type: NodePort
   ports:
   - port: 3306
-    nodePort: 30306
   selector:
     app: mysql
+---
+# Expose a node-port so that we can access the read-write pod for development
+# Note: The selector 'statefulset.kubernetes.io/pod-name: mysql-0' assigned automatically by statefulset
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: devenv
+  name: mysql-dev
+  labels:
+    app: mysql
+    environment: dev
+spec:
+  type: NodePort
+  ports:
+  - name: mysql-port
+    port: 3306
+    nodePort: 30306
+    targetPort: 3306
+  selector:
+    statefulset.kubernetes.io/pod-name: mysql-0
+---
+# There is another technique that suggest using loadbalancer to expose the service
+# See https://itnext.io/exposing-statefulsets-in-kubernetes-698730fb92a1

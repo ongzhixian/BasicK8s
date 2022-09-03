@@ -1,0 +1,21 @@
+# Template=kubectl create deployment redis --image=redis:6.2.7 --dry-run=client -o yaml > app-redis.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: devenv
+  name: redis
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - image: redis:6.2.7
+        name: redis

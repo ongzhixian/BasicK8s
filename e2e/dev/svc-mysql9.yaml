@@ -1,0 +1,73 @@
+# Headless service for stable DNS entries of StatefulSet members.
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: devenv
+  name: mysql
+  labels:
+    app: mysql
+    environment: dev
+spec:
+  clusterIP: None
+  ports:
+  - name: mysql
+    port: 3306
+  selector:
+    app: mysql
+---
+# Client service for connecting to any MySQL instance for reads.
+# For writes, you must instead connect to the primary: mysql-0.mysql.
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: devenv
+  name: mysql-readonly
+  labels:
+    app: mysql
+    environment: dev
+    readonly: "true"
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+  selector:
+    app: mysql
+---
+# Export a node-port so that we can access the read-write pod for development
+# (see https://stackoverflow.com/questions/46456239/how-to-expose-a-headless-service-for-a-statefulset-externally-in-kubernetes)
+# See https://github.com/kubernetes/kubernetes/issues/44103
+# See https://itnext.io/exposing-statefulsets-in-kubernetes-698730fb92a1
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: devenv
+  name: mysql-dev
+  labels:
+    app: mysql
+    environment: dev
+spec:
+  type: NodePort
+  ports:
+  - name: mysql
+    port: 3306
+    nodePort: 30306
+    targetPort: 3306
+  selector:
+    statefulset.kubernetes.io/pod-name: mysql-0
+---
+#
+# Another technique that suggest using LoadBalancer to expose the service
+# See https://itnext.io/exposing-statefulsets-in-kubernetes-698730fb92a1
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-0
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    statefulset.kubernetes.io/pod-name: mysql-0
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306

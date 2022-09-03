@@ -10,7 +10,7 @@ metadata:
 spec:
   storageClassName: hostpath
   capacity:
-    storage: 5Gi
+    storage: 128Mi
   accessModes:
     - ReadWriteOnce
   hostPath:

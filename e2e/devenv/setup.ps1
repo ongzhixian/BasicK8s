@@ -15,6 +15,9 @@ function Install-NewK8s {
     kubectl apply -f .\app-mysql.yaml
     kubectl apply -f .\svc-mysql.yaml
 
+
+    kubectl apply -f .\app-redis.yaml
+    kubectl apply -f .\svc-redis.yaml
     
 }
 
