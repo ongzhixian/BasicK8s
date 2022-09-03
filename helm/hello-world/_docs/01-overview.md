@@ -1,7 +1,12 @@
 # Overview
 
+## tldr;
 
-`helm init hello-world`
+```
+helm init hello-world
+helm lint
+helm template ./hello-world
+```
 
 Files created:
 
