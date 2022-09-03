@@ -28,19 +28,6 @@ spec:
   selector:
     app: mysql
 ---
-# Create an external service per pod exposing a nodeport
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: devenv
-  name: mysql-ext
-spec:
-  type: NodePort
-  ports:
-  - port: 3306
-  selector:
-    app: mysql
----
 # Expose a node-port so that we can access the read-write pod for development
 # Note: The selector 'statefulset.kubernetes.io/pod-name: mysql-0' assigned automatically by statefulset
 apiVersion: v1
