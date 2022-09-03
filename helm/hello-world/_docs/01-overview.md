@@ -3,7 +3,7 @@
 ## tldr;
 
 ```
-helm init hello-world
+helm create hello-world
 helm lint
 
 helm install helloworld my-local-repo/hello-world
