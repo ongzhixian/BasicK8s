@@ -16,9 +16,20 @@ spec:
       - key: .cloudampq.json
         path: .cloudampq.json
       optional: false # default setting; "mysecret" must exist
+  - name: mysql-settings-secret
+    secret:
+      secretName: mysql-settings-secret
+      items:
+      - key: .pythonanywhere.json
+        path: .mysql-settings.json
+      optional: false # default setting; "mysecret" must exist
   containers:
   - image: alpine:3.16
     name: alpine-sh
+    resources:
+      limits:
+        cpu: 100m     # the CPU limit is define in milicore (m)
+        memory: 100Mi # the Memory is define in Mebibytes (Mi)
     env:
     - name: MYSQL_ROOT_PASSWORD
       valueFrom:
@@ -27,7 +38,10 @@ spec:
           key: PASSWORD
     volumeMounts:
     - name: cloud-amqp-secret
-      mountPath: "/mnt/secrets"
+      mountPath: "/mnt/secrets/cloud-amqp"
+      readOnly: true
+    - name: mysql-settings-secret
+      mountPath: "/mnt/secrets/mysql"
       readOnly: true
     command: [ '/bin/sh', '-c', 'sleep inf' ]
     

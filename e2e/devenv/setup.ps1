@@ -76,6 +76,9 @@ function Examples {
     kubectl create secret generic cloud-amqp-secret --from-file=$env:USERPROFILE/.cloudampq.json -o yaml --dry-run=client > secret-cloud-amqp.yaml
     kubectl apply -f .\secret-cloud-amqp.yaml
 
+    kubectl create secret generic mysql-settings-secret --from-file=$env:USERPROFILE/.pythonanywhere.json -o yaml --dry-run=client > secret-mysql-settings.yaml
+    kubectl apply -f .\secret-mysql-settings.yaml
+
     ########################################
     ## Config Maps
 
