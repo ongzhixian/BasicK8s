@@ -36,6 +36,12 @@ switch ($task) {
         exit 1
     }
 }
+
+function Setup-Secrets {
+    param ()
+    Write-Host 'Setup secrets'
+}
+
 # Overview of things to setup
 # Namespace
 # Volumes and claims
@@ -75,6 +81,15 @@ function Examples {
 
     kubectl create secret generic cloud-amqp-secret --from-file=$env:USERPROFILE/.cloudampq.json -o yaml --dry-run=client > secret-cloud-amqp.yaml
     kubectl apply -f .\secret-cloud-amqp.yaml
+
+    kubectl create secret generic mysql-settings-secret --from-file=$env:USERPROFILE/.pythonanywhere.json -o yaml --dry-run=client > secret-mysql-settings.yaml
+    kubectl apply -f .\secret-mysql-settings.yaml
+    
+    kubectl create secret generic database-config-secret --from-file=$env:USERPROFILE/.database-config.json -o yaml --dry-run=client > secret-database-config.yaml
+    kubectl apply -f .\secret-database-config.yaml
+
+    Setup-Secrets
+    
 
     ########################################
     ## Config Maps
