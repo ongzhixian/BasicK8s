@@ -1,7 +1,7 @@
 # Run one of the following to run
 # kubectl run alpine-sh --rm -it --image=alpine:3.16 -- sh
 # kubectl run -i --rm --tty debug --image=alpine:3.16 --restart=Never -- sh
-# kubectl exec pp -it -- sh
+# kubectl exec pp -it -- bash
 apiVersion: v1
 kind: Pod
 metadata:
@@ -23,9 +23,12 @@ spec:
       - key: .pythonanywhere.json
         path: .mysql-settings.json
       optional: false # default setting; "mysecret" must exist
+  - name: sgx-yafi-fileshare
+    persistentVolumeClaim:
+      claimName: generic-128mi-pvc
   containers:
-  - image: alpine:3.16
-    name: alpine-sh
+  - image: mysql:5.7
+    name: mysql57
     resources:
       limits:
         cpu: 100m     # the CPU limit is define in milicore (m)
@@ -43,5 +46,6 @@ spec:
     - name: mysql-settings-secret
       mountPath: "/mnt/secrets/mysql"
       readOnly: true
-    command: [ '/bin/sh', '-c', 'sleep inf' ]
-    
+    - name: sgx-yafi-fileshare
+      mountPath: /usr/share/yafi
+    command: [ '/bin/bash', '-c', 'sleep inf' ]

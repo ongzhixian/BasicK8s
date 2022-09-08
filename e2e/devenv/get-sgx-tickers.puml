@@ -1,4 +1,4 @@
-' java -jar C:\Apps\bin\plantuml.jar -verbose .\x.puml
+'java -jar C:\Apps\bin\plantuml.jar -verbose .\x.puml
 
 @startuml
 
@@ -6,12 +6,20 @@ title get-sgx-tickers
 
 start
 
-/*
-while (data available?)
-    :read data;
-    :generate diagrams;
-endwhile
-*/
+partition get-sgx-tickers-job {
+    :download sgx instrument list;
+    :generate ticker list from instrument list;
+    :filter ticker list with blacklist;
+    :publish filtered ticker list;
+}
+
+partition get-sgx-tickers-job {
+    :listen for tickers;
+    while (ticker in queue)
+        :fetch chart json for ticker;
+        :generate diagrams;
+    endwhile
+}
 
 stop
 
