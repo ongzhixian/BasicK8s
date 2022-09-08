@@ -116,3 +116,11 @@ function Examples {
 
     
 }
+
+function Update-Secrets {
+}
+
+function Setup-Sgx {
+    # make image sgx-isin:v1
+    # init database
+}
