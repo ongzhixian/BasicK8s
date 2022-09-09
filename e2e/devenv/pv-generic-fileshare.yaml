@@ -1,4 +1,18 @@
 # Define a PV.
+# Volume mount usage layout
+# /usr/share/generic-128mi
+# ├───/instrument
+# │   ├───/asx
+# │   │   ├───asx-isin-20220909-030601.txt
+# │   │   └───asx-isin-20220909-030601.txt
+# │   └───/sgx
+# │       └───sgx-isin-20220909-030601.txt
+# ├───/yahoo-finance
+# │   └───/sgx
+# │       └───sgx-isin-20220909-030601.txt
+# └───/sql
+#     ├───01-database.sql  
+#     └───02-instrument_type.sql
 apiVersion: v1
 kind: PersistentVolume
 metadata:
