@@ -23,16 +23,16 @@ function Install-NewK8s {
 
 function Sync-Secrets {
 
-    kubectl create secret generic mysql-secret --from-literal=PASSWORD=$((Get-Content "$env:USERPROFILE/.pythonanywhere.json" -Raw | ConvertFrom-Json).MYSQL.dev_forum.PASSWORD) -o yaml --dry-run=client > secret-mysql.yaml
+    kubectl create secret generic mysql-secret --from-literal=PASSWORD=$((Get-Content "$env:USERPROFILE/.pythonanywhere.json" -Raw | ConvertFrom-Json).MYSQL.dev_forum.PASSWORD) --namespace=devenv -o yaml --dry-run=client > secret-mysql.yaml
     kubectl apply -f .\secret-mysql.yaml
 
-    kubectl create secret generic cloud-amqp-secret --from-file=$env:USERPROFILE/.cloudampq.json -o yaml --dry-run=client > secret-cloud-amqp.yaml
+    kubectl create secret generic cloud-amqp-secret --from-file=$env:USERPROFILE/.cloudampq.json --namespace=devenv -o yaml --dry-run=client > secret-cloud-amqp.yaml
     kubectl apply -f .\secret-cloud-amqp.yaml
 
-    kubectl create secret generic mysql-settings-secret --from-file=$env:USERPROFILE/.pythonanywhere.json -o yaml --dry-run=client > secret-mysql-settings.yaml
+    kubectl create secret generic mysql-settings-secret --from-file=$env:USERPROFILE/.pythonanywhere.json --namespace=devenv -o yaml --dry-run=client > secret-mysql-settings.yaml
     kubectl apply -f .\secret-mysql-settings.yaml
     
-    kubectl create secret generic database-config-secret --from-file=$env:USERPROFILE/.database-config.json -o yaml --dry-run=client > secret-database-config.yaml
+    kubectl create secret generic database-config-secret --from-file=$env:USERPROFILE/.database-config.json --namespace=devenv -o yaml --dry-run=client > secret-database-config.yaml
     kubectl apply -f .\secret-database-config.yaml
 
 }
