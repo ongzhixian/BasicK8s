@@ -88,6 +88,8 @@ docker.io/library/sgx-isin:v1
 docker.io/library/basic-mvc:4
 docker.io/library/basic-mvc:1
 
+icr.io/ibm-messaging/mq
+https://github.com/ibm-messaging/mq-container/blob/master/docs/usage.md
 
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password_123' -e 'MSSQL_PID=Express' -p 1433:1433 --name sqlserver mcr.microsoft.com/mssql/server
 

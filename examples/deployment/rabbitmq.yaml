@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-minikube
+  labels:
+    app: rabbitmq-minikube  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq-minikube
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-minikube
+    spec:
+      containers:
+      - image: rabbitmq:3.10-management
+        name: rabbitmq
