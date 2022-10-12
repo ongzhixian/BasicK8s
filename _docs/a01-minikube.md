@@ -76,6 +76,7 @@ minikube image load erlang:25
 minikube image load alpine:3.16
 minikube image load ubuntu:jammy
 minikube image load debian:bullseye-slim
+minikube image load postgres:14.5
 
 
 docker.io/zhixian/alpine-lftp:latest
