@@ -1,0 +1,64 @@
+# Headless service for stable DNS entries of StatefulSet members.
+apiVersion: v1
+kind: Service
+metadata:
+  name: ibm-mq-channel
+spec:
+  clusterIP: None
+  ports:
+  - port: 1414
+  selector:
+    app: ibm-mq
+---
+# Headless service for stable DNS entries of StatefulSet members.
+apiVersion: v1
+kind: Service
+metadata:
+  name: ibm-mq-web
+spec:
+  clusterIP: None
+  ports:
+  - port: 9443
+  selector:
+    app: ibm-mq
+---
+# Client service for connecting to any MySQL instance for reads.
+# For writes, you must instead connect to the primary: ibm-mq-qm1-0.mysql.
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: devenv
+  name: ibm-mq-qm1-readonly
+  labels:
+    app: ibm-mq-qm1
+    environment: dev
+    readonly: "true"
+spec:
+  ports:
+  - name: ibm-mq-qm1
+    port: 3306
+  selector:
+    app: ibm-mq-qm1
+---
+# Expose a node-port so that we can access the read-write pod for development
+# Note: The selector 'statefulset.kubernetes.io/pod-name: ibm-mq-qm1-0' assigned automatically by statefulset
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: devenv
+  name: ibm-mq-qm1-dev
+  labels:
+    app: ibm-mq-qm1
+    environment: dev
+spec:
+  type: NodePort
+  ports:
+  - name: ibm-mq-qm1-port
+    port: 3306
+    nodePort: 30306
+    targetPort: 3306
+  selector:
+    statefulset.kubernetes.io/pod-name: ibm-mq-qm1-0
+---
+# There is another technique that suggest using loadbalancer to expose the service
+# See https://itnext.io/exposing-statefulsets-in-kubernetes-698730fb92a1

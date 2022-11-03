@@ -79,6 +79,9 @@ minikube image load debian:bullseye-slim
 minikube image load postgres:14.5
 minikube image load php:8.1-apache-bullseye
 
+minikube image load icr.io/ibm-messaging/mq:latest
+https://github.com/ibm-messaging/mq-container
+
 
 docker.io/zhixian/alpine-lftp:latest
 docker.io/library/alpine:latest
@@ -118,6 +121,18 @@ minikube kubectl -- expose deployment rabbitmq-minikube --type=NodePort --port=1
 -- OR --
 minikube kubectl -- expose deployment rabbitmq-mgmt --type=NodePort --port=15672
 minikube kubectl -- expose deployment rabbitmq-port --type=NodePort --port=5672
+
+
+---
+IBM MQ
+
+ docker run --env LICENSE=accept --env MQ_QMGR_NAME=QM1 --volume ibm-mq-pv:/data/ibm_mq --publish 1414:1414 --publish 9443:9443 --detach --env MQ_APP_PASSWORD=passw0rd --name QM1 icr.io/ibm-messaging/mq:latest
+
+minikube kubectl -- create deployment qm1 --image=icr.io/ibm-messaging/mq:latest
+minikube kubectl -- set env deployment/qm1 LICENSE=accept
+minikube kubectl -- set env deployment/qm1 MQ_QMGR_NAME=QM1
+minikube kubectl -- set env deployment/qm1 MQ_APP_PASSWORD=pass1234
+minikube kubectl -- expose deployment qm1 --type=NodePort --port=1414,9443
 
 
 # Upgrade k8s

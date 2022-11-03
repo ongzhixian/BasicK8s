@@ -1,0 +1,35 @@
+# Define a PV for IBM MQ.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: devenv
+  name: ibm-mq-pv
+  labels:
+    type: local
+    app: ibm-mq
+    environment: dev
+spec:
+  storageClassName: hostpath
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/ibm_mq"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: devenv
+  name: ibm-mq-pvc
+  labels:
+    app: ibm-mq
+    environment: dev
+spec:
+  storageClassName: hostpath
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  
