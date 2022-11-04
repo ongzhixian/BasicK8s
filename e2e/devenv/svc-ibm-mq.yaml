@@ -10,7 +10,6 @@ spec:
   selector:
     app: ibm-mq
 ---
-# Headless service for stable DNS entries of StatefulSet members.
 apiVersion: v1
 kind: Service
 metadata:
@@ -22,43 +21,77 @@ spec:
   selector:
     app: ibm-mq
 ---
-# Client service for connecting to any MySQL instance for reads.
-# For writes, you must instead connect to the primary: ibm-mq-qm1-0.mysql.
+# Client service for connecting to any IBM MQ instance for reads.
+# For writes, you must instead connect to the primary: ibm-mq-0.mysql.
 apiVersion: v1
 kind: Service
 metadata:
   namespace: devenv
-  name: ibm-mq-qm1-readonly
+  name: ibm-mq-channel-readonly
   labels:
-    app: ibm-mq-qm1
+    app: ibm-mq
     environment: dev
     readonly: "true"
 spec:
   ports:
-  - name: ibm-mq-qm1
-    port: 3306
+  - name: ibm-mq
+    port: 1414
   selector:
-    app: ibm-mq-qm1
+    app: ibm-mq
 ---
-# Expose a node-port so that we can access the read-write pod for development
-# Note: The selector 'statefulset.kubernetes.io/pod-name: ibm-mq-qm1-0' assigned automatically by statefulset
 apiVersion: v1
 kind: Service
 metadata:
   namespace: devenv
-  name: ibm-mq-qm1-dev
+  name: ibm-mq-web-readonly
   labels:
-    app: ibm-mq-qm1
+    app: ibm-mq
+    environment: dev
+    readonly: "true"
+spec:
+  ports:
+  - name: ibm-mq
+    port: 9443
+  selector:
+    app: ibm-mq
+---
+# Expose a node-port so that we can access the read-write pod for development
+# Note: The selector 'statefulset.kubernetes.io/pod-name: ibm-mq-0' assigned automatically by statefulset
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: devenv
+  name: ibm-mq-channel-dev
+  labels:
+    app: ibm-mq
     environment: dev
 spec:
   type: NodePort
   ports:
-  - name: ibm-mq-qm1-port
-    port: 3306
-    nodePort: 30306
-    targetPort: 3306
+  - name: ibm-mq-channel-port
+    port: 1414
+    nodePort: 31414
+    targetPort: 1414
   selector:
-    statefulset.kubernetes.io/pod-name: ibm-mq-qm1-0
+    statefulset.kubernetes.io/pod-name: ibm-mq-0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: devenv
+  name: ibm-mq-web-dev
+  labels:
+    app: ibm-mq
+    environment: dev
+spec:
+  type: NodePort
+  ports:
+  - name: ibm-mq-web-port
+    port: 9443
+    nodePort: 31443
+    targetPort: 39443
+  selector:
+    statefulset.kubernetes.io/pod-name: ibm-mq-0
 ---
 # There is another technique that suggest using loadbalancer to expose the service
 # See https://itnext.io/exposing-statefulsets-in-kubernetes-698730fb92a1
