@@ -28,6 +28,13 @@ minikube ssh "sudo ifconfig eth0:0 192.168.99.200"
 
 https://github.com/kubernetes/minikube/issues/951
 
+
+sudo ifconfig eth0 down
+sudo ifconfig eth0 192.168.1.242
+sudo ifconfig eth0 up
+
+See also: https://superuser.com/questions/564797/change-ip-address-permanently-with-ifconfig-in-debian
+
 # Reference
 
 https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
