@@ -47,3 +47,7 @@ https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
 https://www.ibm.com/support/pages/expose-nginx-ingress-controller-another-port-0
 
 https://docs.k0sproject.io/v1.23.6+k0s.2/examples/nginx-ingress/
+
+https://pythops.com/post/minikube-setup.html
+https://www.bogotobogo.com/DevOps/Docker/Docker_Kubernetes_DNS_with_Pods_Services.php
+https://coredns.io/2017/05/08/custom-dns-entries-for-kubernetes/
